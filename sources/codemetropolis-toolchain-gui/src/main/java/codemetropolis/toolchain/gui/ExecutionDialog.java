@@ -121,5 +121,13 @@ public class ExecutionDialog extends JDialog {
       e.printStackTrace();
     }
   }
+  
+  /**
+   * Enables the close button.
+   * 
+   */
+  public void enableCloseButton() {
+	  close.setEnabled(true);
+  }
 
 }
