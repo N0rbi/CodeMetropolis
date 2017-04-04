@@ -12,6 +12,7 @@ import codemetropolis.toolchain.gui.beans.ExecutionOptions;
  * @author Adam Bankeszi {@literal <BAAVAGT.SZE>}
  */
 public class GuiUtils {
+	
 
   /**
    * Attempts to find the location for the root folder of Minecraft, if it is installed.
@@ -83,6 +84,27 @@ public class GuiUtils {
    */
   public static void showError(String message) {
     JOptionPane.showMessageDialog(null, message, Translations.t("gui_err_title"), JOptionPane.ERROR_MESSAGE);
+  }
+  
+  public static void deleteDirectory(File f) throws Exception {
+	  if (f.exists() && f.isDirectory()) {
+		  
+		  String[] itemsInFolder = f.list();
+		  for (String item : itemsInFolder) {
+			  File fileToDelete = new File(f.getAbsolutePath(), item);
+			  if(fileToDelete.isDirectory()){
+				  deleteDirectory(fileToDelete);
+			  }else{
+				  fileToDelete.delete();
+			  }
+		  }
+		  
+		  f.delete();
+	  }
+  }
+  
+  public static File getTempFolder(ExecutionOptions executionOptions) {
+	  return new File(executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + ".code-metropolis" + File.separator + ".temp");
   }
 
 }

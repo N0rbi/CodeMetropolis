@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.PipedOutputStream;
+import java.io.PrintStream;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -19,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 
+import codemetropolis.toolchain.gui.beans.ExecutionException;
 import codemetropolis.toolchain.gui.beans.ExecutionOptions;
 import codemetropolis.toolchain.gui.components.CMButton;
 import codemetropolis.toolchain.gui.components.CMCheckBox;
@@ -29,6 +31,7 @@ import codemetropolis.toolchain.gui.components.CMSpinner;
 import codemetropolis.toolchain.gui.components.CMTextField;
 import codemetropolis.toolchain.gui.components.listeners.BrowseListener;
 import codemetropolis.toolchain.gui.utils.ExecutionWorker;
+import codemetropolis.toolchain.gui.utils.Executor;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
 import codemetropolis.toolchain.gui.utils.XmlFileFilter;
@@ -105,7 +108,7 @@ public class CodeMetropolisGUI extends JFrame {
     JPanel panel = new JPanel();
     panel.setLayout(null);
     panel.setBackground(Color.WHITE);
-    panel.setBounds(0, 0, 500, 700);
+    panel.setBounds(0, 0, 500, 650);
 
     Dimension size = new Dimension(500, 750);
     panel.setMinimumSize(size);
@@ -200,7 +203,7 @@ public class CodeMetropolisGUI extends JFrame {
   private final void addMappingOptions(JPanel panel) {
     CMLabel mappingLabel = new CMLabel(Translations.t("gui_l_mapping"), 15, 555, 120, 30);
     mappingPath = new CMTextField(145, 555, 235, 30);
-    CMButton mappingBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 555, 100, 30);
+    CMButton mappingBrowse = new CMButton(Translations.t("gui_b_browse"), 385, 555, 50, 30);
     mappingBrowse.addActionListener(new BrowseListener(mappingPath, JFileChooser.FILES_ONLY, XML_FILTER));
 
     CMLabel scaleLabel = new CMLabel(Translations.t("gui_l_scale"), 15, 590, 120, 30);
@@ -212,6 +215,7 @@ public class CodeMetropolisGUI extends JFrame {
     panel.add(mappingLabel);
     panel.add(mappingPath);
     panel.add(mappingBrowse);
+    addCustomizeMappingButton(panel);
     panel.add(scaleLabel);
     panel.add(scaleSpinner);
     panel.add(validateStructure);
@@ -276,13 +280,64 @@ public class CodeMetropolisGUI extends JFrame {
           PipedOutputStream out = new PipedOutputStream();
           ExecutionDialog dialog = new ExecutionDialog(self, out);
           dialog.setVisible(true);
-          ExecutionWorker worker = new ExecutionWorker(start, controller, out);
+          Executor exec = new Executor() {
+			public void execute() {
+				try {
+					controller.execute(new PrintStream(out));
+					dialog.enableCloseButton();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+			}
+          };
+          ExecutionWorker worker = new ExecutionWorker(start, exec, out, true);
           worker.execute();
         }
       }
     });
 
     panel.add(start);
+  }
+  
+  private final void addCustomizeMappingButton(JPanel panel) {
+	  
+	  CodeMetropolisGUI self = this;
+	  CMButton customize = new CMButton("Customize", 435, 555, 50, 30);
+	  customize.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ExecutionOptions executionOptions = controller.getExecutionOptions();
+			fillOptions(executionOptions);
+	        if (!fillAndValidateMetricOptions(executionOptions)) {
+	          return;
+	        }
+	        
+			PipedOutputStream out = new PipedOutputStream();
+			ExecutionDialog dialog = new ExecutionDialog(self, out);
+			dialog.setVisible(true);
+			Executor exec = new Executor() {
+				public void execute() {
+					try {
+						controller.executeUntilConverter(new PrintStream(out));
+						dialog.enableCloseButton();
+						CustomMapperController mapperController = new CustomMapperController(executionOptions);
+						for(String s :mapperController.parseMetricsFromTempFile()) {
+							System.out.println(s);
+						}
+						CustomMapperGUI mapperGUI = new CustomMapperGUI(mapperController);
+						mapperGUI.setVisible(true);
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+				}
+	          };
+			ExecutionWorker worker = new ExecutionWorker(customize, exec, out, false);
+			worker.execute();
+		}
+	  });
+	  
+	  panel.add(customize);
   }
 
   /**

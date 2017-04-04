@@ -17,6 +17,7 @@ import codemetropolis.toolchain.gui.executors.PlacingToolExecutor;
 import codemetropolis.toolchain.gui.executors.RenderingToolExecutor;
 import codemetropolis.toolchain.gui.metricgenerators.SonarQubeGenerator;
 import codemetropolis.toolchain.gui.metricgenerators.SourceMeterGenerator;
+import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
 
 /**
@@ -30,6 +31,7 @@ public class GUIController {
 
   private ExecutionOptions executionOptions;
   private List<CMMetricPanel> metricGeneratorPanels = new ArrayList<CMMetricPanel>();
+  private File tempFolder;
 
   /**
    * Instantiates a {@link GUIController} and adds the available metricGeneration options.
@@ -39,6 +41,7 @@ public class GUIController {
 
     metricGeneratorPanels.add(new SourceMeterGenerator());
     metricGeneratorPanels.add(new SonarQubeGenerator());
+    
   }
 
   /**
@@ -62,6 +65,27 @@ public class GUIController {
       throw new ExecutionException("Toolchain execution failed!", e);
     }
   }
+  
+  /**
+   * Handles toolchain execution until the converter tool. The output will be in the temporary folder.
+   * 
+   * @param outout The {@link PrintStream} instance that will be set for each executor, so we can read their outputs and
+   *          display them for the user.
+   * @throws ExecutionException if any exception occurs during execution.
+   */
+  public void executeUntilConverter(PrintStream out) throws ExecutionException {
+	  try {
+		  if(this.tempFolder == null){
+			  this.tempFolder = createTempFolder();
+		  }
+		  
+	      new MetricGeneratorExecutor().execute(tempFolder, executionOptions, out);
+	      new ConverterToolExecutor().execute(tempFolder, executionOptions, out);
+	      
+	  } catch (Exception e) {
+		  throw new ExecutionException("Toolchain execution failed!", e);
+	  }
+  }
 
   /**
    * Creates the folder that will be used to store the intermediate project files.
@@ -81,6 +105,42 @@ public class GUIController {
     }
     return projectRoot;
   }
+  
+  /**
+   * Creates the temporary folder to store values until the program runs.
+   * 
+   * @return The {@link File} object that is referenced as temporary folder.
+   * @throws ExecutionException
+   */
+  private File createTempFolder() throws ExecutionException {
+	  
+	File cmRoot = new File(executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + ".code-metropolis");
+	if (!cmRoot.exists()) {
+	  cmRoot.mkdir();
+	}
+	
+	File tempFolder = GuiUtils.getTempFolder(executionOptions);
+	    
+	if (!tempFolder.mkdir()) {
+		throw new ExecutionException(Translations.t("gui_err_mkdir_project_failed"));
+    }
+	
+	Runtime.getRuntime().addShutdownHook(new Thread() {
+
+	      @Override
+	      public void run() {
+	    	  try {
+	    		  if (tempFolder.exists()) {
+	    			 GuiUtils.deleteDirectory(tempFolder); 
+	    		  }
+	    	  } catch(Exception e) {
+	    		  //we can't do anything at this point
+	    	  }
+	      }
+	 });
+	
+    return tempFolder;
+  }
 
   /**
    * Gets the current date and time, then returns a formatted version of it, that can act as a valid directory name.
@@ -98,5 +158,6 @@ public class GUIController {
   public List<CMMetricPanel> getMetricGeneratorPanels() {
     return metricGeneratorPanels;
   }
+
 
 }
