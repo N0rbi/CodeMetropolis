@@ -99,7 +99,7 @@ public class ExecutionDialog extends JDialog {
     close.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        setVisible(false);
+        closeDialog();
       }
     });
 
@@ -128,6 +128,14 @@ public class ExecutionDialog extends JDialog {
    */
   public void enableCloseButton() {
 	  close.setEnabled(true);
+  }
+  
+  /**
+   * Closes the dialog dynamically.
+   */
+  public void closeDialog() {
+	  setVisible(false);
+	  dispose();
   }
 
 }

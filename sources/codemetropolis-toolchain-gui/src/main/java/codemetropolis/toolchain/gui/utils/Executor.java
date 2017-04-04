@@ -1,7 +1,11 @@
 package codemetropolis.toolchain.gui.utils;
 
-import java.io.PrintStream;
 
+/**
+ * Interface used by {@link ExecutionWorker}, it calls the {@link execute()} method.
+ * @author Norbi
+ *
+ */
 public interface Executor {
 	
 	/**

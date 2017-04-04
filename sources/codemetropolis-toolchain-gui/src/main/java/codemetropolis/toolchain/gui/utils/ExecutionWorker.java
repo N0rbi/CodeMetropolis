@@ -1,7 +1,5 @@
 package codemetropolis.toolchain.gui.utils;
 
-import java.io.PipedOutputStream;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -25,8 +23,10 @@ public class ExecutionWorker extends SwingWorker<Void, Integer> {
    * @param actionButton The button used to start the execution. This reference is required because at the start and at the end
    *   of the execution it will be disabled and re-enabled, respectively.
    * @param executor The controller instance that will do the actual execution.
+   * @param showSuccessDialog if <code>true</code> it will show a dialog that the execution succeeded. 
+   * Otherwise it will do nothing.
    */
-  public ExecutionWorker(JButton actionButton, Executor executor, PipedOutputStream out, boolean showSuccessDialog) {
+  public ExecutionWorker(JButton actionButton, Executor executor, boolean showSuccessDialog) {
     this.actionButton = actionButton;
     this.executor = executor;
     this.showSuccessDialog = showSuccessDialog;

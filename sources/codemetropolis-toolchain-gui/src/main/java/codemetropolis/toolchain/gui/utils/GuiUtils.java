@@ -103,6 +103,11 @@ public class GuiUtils {
 	  }
   }
   
+  /**
+   * Gets the temporary folder of the project.
+   * @param executionOptions the {@link ExecutionOptions} instance to parse the minecraft path from.
+   * @return the temporary folder {@link File} if found, <code>null</code> otherwise.
+   */
   public static File getTempFolder(ExecutionOptions executionOptions) {
 	  return new File(executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + ".code-metropolis" + File.separator + ".temp");
   }

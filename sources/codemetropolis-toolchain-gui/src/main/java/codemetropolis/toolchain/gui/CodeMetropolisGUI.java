@@ -290,7 +290,7 @@ public class CodeMetropolisGUI extends JFrame {
 				}
 			}
           };
-          ExecutionWorker worker = new ExecutionWorker(start, exec, out, true);
+          ExecutionWorker worker = new ExecutionWorker(start, exec, true);
           worker.execute();
         }
       }
@@ -298,7 +298,11 @@ public class CodeMetropolisGUI extends JFrame {
 
     panel.add(start);
   }
-  
+  /**
+   * Adds the customize button next to the browse button.
+   *
+   * @param panel The {@link JPanel} to add the components to.
+   */
   private final void addCustomizeMappingButton(JPanel panel) {
 	  
 	  CodeMetropolisGUI self = this;
@@ -309,7 +313,7 @@ public class CodeMetropolisGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			ExecutionOptions executionOptions = controller.getExecutionOptions();
 			fillOptions(executionOptions);
-	        if (!fillAndValidateMetricOptions(executionOptions)) {
+	        if (!validateProjectName(executionOptions) || !fillAndValidateMetricOptions(executionOptions)) {
 	          return;
 	        }
 	        
@@ -319,12 +323,9 @@ public class CodeMetropolisGUI extends JFrame {
 			Executor exec = new Executor() {
 				public void execute() {
 					try {
-						controller.executeUntilConverter(new PrintStream(out));
-						dialog.enableCloseButton();
 						CustomMapperController mapperController = new CustomMapperController(executionOptions);
-						for(String s :mapperController.parseMetricsFromTempFile()) {
-							System.out.println(s);
-						}
+						mapperController.executeUntilConverter(new PrintStream(out));
+						dialog.closeDialog();
 						CustomMapperGUI mapperGUI = new CustomMapperGUI(mapperController);
 						mapperGUI.setVisible(true);
 					} catch (ExecutionException e) {
@@ -332,13 +333,27 @@ public class CodeMetropolisGUI extends JFrame {
 					}
 				}
 	          };
-			ExecutionWorker worker = new ExecutionWorker(customize, exec, out, false);
+			ExecutionWorker worker = new ExecutionWorker(customize, exec, false);
 			worker.execute();
 		}
 	  });
 	  
 	  panel.add(customize);
   }
+  
+  /**
+   * Validates the project name
+   * 
+   * @param executionOptions The target {@link ExecutionOptions} instance.
+   * @return <code>true</code> if the project name is not whitespace, or empty, <code>false</code> otherwise.
+   */
+  private boolean validateProjectName(ExecutionOptions executionOptions) {
+		if(executionOptions.getProjectName().trim().isEmpty()){
+			GuiUtils.showError("Project name may not be empty.");
+			return false;
+		}
+		return true;
+	}
 
   /**
    * Fills the data required for the metric generation tools.
