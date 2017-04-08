@@ -8,7 +8,7 @@ class ExternalCharacterAttribute extends BuildingAttribute {
 	public ExternalCharacterAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		super(metricType);
 		this.name = "external_character";
-		this.dataType = MetricDataType.string;
+		this.dataType = MetricDataType.getMetricDataType("STRING");
 		this.description = "secondary material the structure is made of";
 	}
 

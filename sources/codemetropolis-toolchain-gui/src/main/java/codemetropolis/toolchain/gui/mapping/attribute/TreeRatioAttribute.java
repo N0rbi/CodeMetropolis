@@ -8,7 +8,7 @@ class TreeRatioAttribute extends BuildingAttribute {
 	public TreeRatioAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		super(metricType);
 		this.name = "tree-ratio";
-		this.dataType = MetricDataType.normalizedFloat;
+		this.dataType = MetricDataType.getMetricDataType("FLOAT");
 		this.description = "quantity of trees, bigger value means smaller spaces";
 	}
 

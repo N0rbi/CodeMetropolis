@@ -1,6 +1,8 @@
 package codemetropolis.toolchain.gui.utils;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import javax.swing.JOptionPane;
 
@@ -110,6 +112,16 @@ public class GuiUtils {
    */
   public static File getTempFolder(ExecutionOptions executionOptions) {
 	  return new File(executionOptions.getMinecraftRoot().getAbsolutePath() + File.separator + ".code-metropolis" + File.separator + ".temp");
+  }
+  
+  /**
+   * Checks if the items given defer from each other.
+   * @param objects the items to check for duplicates.
+   * @return <code>true</code> if the items are different, <code>false</code> otherwise.
+   */
+  public static boolean areAllDistinct(Object...objects) {
+	  HashSet<Object> objectSet = new HashSet<>(Arrays.asList(objects));
+	  return objects.length == objectSet.size();
   }
 
 }

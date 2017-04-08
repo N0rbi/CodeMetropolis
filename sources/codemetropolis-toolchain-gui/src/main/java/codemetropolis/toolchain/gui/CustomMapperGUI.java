@@ -27,6 +27,7 @@ public class CustomMapperGUI extends JFrame {
 	 */
 	public CustomMapperGUI(CustomMapperController controller) {
 		this.controller = controller;
+		
 		JPanel panel = createBasePanel();
 	    
 	    this.setResizable(false);

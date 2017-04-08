@@ -8,7 +8,7 @@ class CharacterAttribute extends BuildingAttribute {
 	public CharacterAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		super(metricType);
 		this.name = "character";
-		this.dataType = MetricDataType.string;
+		this.dataType = MetricDataType.getMetricDataType("STRING");
 		this.description = "primary material the structure is made of";
 	}
 

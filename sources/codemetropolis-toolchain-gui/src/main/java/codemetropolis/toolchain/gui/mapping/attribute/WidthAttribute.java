@@ -8,7 +8,7 @@ class WidthAttribute extends BuildingAttribute{
 	public WidthAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		super(metricType);
 		this.name = "width";
-		this.dataType = MetricDataType.integer;
+		this.dataType = MetricDataType.getMetricDataType("INTEGER");
 		this.description = "size near X";
 	}
 

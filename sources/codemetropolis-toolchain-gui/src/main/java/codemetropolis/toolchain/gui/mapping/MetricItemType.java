@@ -47,5 +47,11 @@ public class MetricItemType {
 		}
 		return super.equals(obj);
 	}
+	@Override
+	public String toString() {
+		return "MetricItemType [name=" + name + ", dataType=" + dataType + "]";
+	}
+	
+	
 	
 }

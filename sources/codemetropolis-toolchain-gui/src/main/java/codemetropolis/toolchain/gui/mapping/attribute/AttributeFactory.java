@@ -5,7 +5,7 @@ import codemetropolis.toolchain.gui.mapping.MetricItemType;
 public class AttributeFactory {
 	
 	// http://geryxyz.github.io/CodeMetropolis/toolchain/mapping/
-	
+	//TODO: Conversion parameter
 	public BuildingAttribute getBuildingAttribute(String name, MetricItemType metricType) throws UnknownAttributeException, ConversionMismatchException {
 		switch (name) {
 			case "WIDTH": return new WidthAttribute(metricType);
@@ -17,7 +17,7 @@ public class AttributeFactory {
 			case "FLOWER-RATIO": return new FlowerRatioAttribute(metricType);
 			case "TREE-RATIO": return new TreeRatioAttribute(metricType);
 			case "MUSHROOM-RATIO": return new MushroomRatio(metricType);
-			default: throw new UnknownAttributeException();
+			default: throw new UnknownAttributeException("The given attribute does not exist.");
 		}
 	}
 

@@ -8,7 +8,7 @@ class LengthAttribute extends BuildingAttribute{
 	public LengthAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		super(metricType);
 		this.name = "length";
-		this.dataType = MetricDataType.integer;
+		this.dataType = MetricDataType.getMetricDataType("INTEGER");
 		this.description = "size near Z";
 	}
 

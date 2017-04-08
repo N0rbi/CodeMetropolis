@@ -8,7 +8,7 @@ class TourchesAttribute extends BuildingAttribute {
 	public TourchesAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		super(metricType);
 		this.name = "torches";
-		this.dataType = MetricDataType.integer;
+		this.dataType = MetricDataType.getMetricDataType("INTEGER");
 		this.description = "quantity of torches, bigger value means smaller spaces between torches";
 	}
 

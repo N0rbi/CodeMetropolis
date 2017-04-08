@@ -12,9 +12,9 @@ public abstract class BuildingAttribute {
 	
 	public BuildingAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		this.metricType = metricType;
-		if (!this.dataType.equals(this.metricType.getDataType())){
-			throw new ConversionMismatchException();
-		}
+//		if (!this.dataType.equals(this.metricType.getDataType())){
+//			throw new ConversionMismatchException();
+//		}
 	}
 	
 	

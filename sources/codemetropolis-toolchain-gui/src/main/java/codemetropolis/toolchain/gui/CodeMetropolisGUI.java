@@ -324,7 +324,7 @@ public class CodeMetropolisGUI extends JFrame {
 				public void execute() {
 					try {
 						CustomMapperController mapperController = new CustomMapperController(executionOptions);
-						mapperController.executeUntilConverter(new PrintStream(out));
+						mapperController.prepare(new PrintStream(out));
 						dialog.closeDialog();
 						CustomMapperGUI mapperGUI = new CustomMapperGUI(mapperController);
 						mapperGUI.setVisible(true);

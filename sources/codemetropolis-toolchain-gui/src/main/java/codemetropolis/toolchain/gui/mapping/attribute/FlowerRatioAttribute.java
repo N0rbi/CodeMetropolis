@@ -8,7 +8,7 @@ class FlowerRatioAttribute extends BuildingAttribute {
 	public FlowerRatioAttribute(MetricItemType metricType) throws ConversionMismatchException {
 		super(metricType);
 		this.name = "flower-ratio";
-		this.dataType = MetricDataType.normalizedFloat;
+		this.dataType = MetricDataType.getMetricDataType("FLOAT");
 		this.description = "quantity of torches, bigger value means smaller spaces";
 	}
 
