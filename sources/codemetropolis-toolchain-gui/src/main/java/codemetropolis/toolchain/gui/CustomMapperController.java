@@ -30,11 +30,11 @@ import codemetropolis.toolchain.gui.mapping.attribute.AttributeFactory;
 import codemetropolis.toolchain.gui.mapping.attribute.BuildingAttribute;
 import codemetropolis.toolchain.gui.mapping.attribute.ConversionMismatchException;
 import codemetropolis.toolchain.gui.mapping.attribute.UnknownAttributeException;
-import codemetropolis.toolchain.gui.mapping.target.AttributeDuplicateException;
-import codemetropolis.toolchain.gui.mapping.target.BuildingTargettable;
-import codemetropolis.toolchain.gui.mapping.target.TargetFactory;
-import codemetropolis.toolchain.gui.mapping.target.UnknownTargetException;
-import codemetropolis.toolchain.gui.mapping.target.WrongAttributeException;
+import codemetropolis.toolchain.gui.mapping.targettable.AttributeDuplicateException;
+import codemetropolis.toolchain.gui.mapping.targettable.BuildingTargettable;
+import codemetropolis.toolchain.gui.mapping.targettable.TargetFactory;
+import codemetropolis.toolchain.gui.mapping.targettable.UnknownTargetException;
+import codemetropolis.toolchain.gui.mapping.targettable.WrongAttributeException;
 import codemetropolis.toolchain.gui.utils.GuiUtils;
 import codemetropolis.toolchain.gui.utils.Translations;
 
