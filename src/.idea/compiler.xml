@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="codemetropolis-toolchain-commons" />
+        <module name="codemetropolis-toolchain-converter" />
+        <module name="codemetropolis-toolchain-gui" />
+        <module name="codemetropolis-toolchain-mapping" />
+        <module name="codemetropolis-toolchain-placing" />
+        <module name="codemetropolis-toolchain-rendering" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="codemetropolis-toolchain" target="1.8" />
+      <module name="codemetropolis-toolchain-commons" target="1.8" />
+      <module name="codemetropolis-toolchain-converter" target="1.8" />
+      <module name="codemetropolis-toolchain-gui" target="1.8" />
+      <module name="codemetropolis-toolchain-mapping" target="1.8" />
+      <module name="codemetropolis-toolchain-placing" target="1.8" />
+      <module name="codemetropolis-toolchain-rendering" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
